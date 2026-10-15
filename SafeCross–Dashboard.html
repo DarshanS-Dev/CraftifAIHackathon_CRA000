@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SafeCross – Events Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eceeea;--card:#f8f9f6;--panel:#e3e6e0;--ink:#15181a;--mute:#7b7f7a;--line:#cfd3cc;--lime:#eaff7a;--ls:#b6d400;--dark:#15181a;--amber:#e39f3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0f0e;--card:#181c1a;--panel:#141715;--ink:#eef0ea;--mute:#8d918b;--line:#2a2f2c;--ls:#e4fb62;--dark:#050606}
+.c.d,.exp,.side{box-shadow:0 0 0 1px #2a2f2c}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.4 "Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif}
+.shell{display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;max-width:1360px;margin:0 auto;padding:14px}
+.side{background:var(--dark);border-radius:26px;display:flex;flex-direction:column;align-items:center;padding:14px 0;gap:10px;position:sticky;top:14px;height:calc(100vh - 28px);min-height:460px}
+.side b,.side i{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:16px;color:#a9aca7}
+.side b{background:#2a2e30;color:#fff;margin-bottom:8px}.side i.on{background:#2a2e30;color:#fff}.side .sp{flex:1}
+main{min-width:0;display:flex;flex-direction:column;gap:16px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;padding:6px 6px 0}
+h1{font-size:clamp(32px,5vw,50px);line-height:1.1;margin:0;font-weight:500;letter-spacing:-.035em}
+.chip{display:inline-flex;align-items:center;justify-content:center;width:1.2em;height:1.2em;border-radius:50%;vertical-align:-.1em;font-size:.58em;background:var(--card);margin:0 .15em}
+.chip.l{background:var(--lime);color:#15181a;width:1.9em;border-radius:999px}
+.hr{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{height:50px;display:flex;align-items:center;gap:9px;background:var(--card);border-radius:999px;padding:0 18px;font-weight:500;font-size:14px}
+.dot{width:9px;height:9px;border-radius:50%;background:#14b86a;box-shadow:0 0 0 4px #14b86a33}.dot.warn{background:var(--amber);box-shadow:0 0 0 4px #e39f3a33}
+.btn{height:50px;border-radius:999px;border:0;background:var(--dark);color:#fff;padding:0 24px;font:500 15px "Inter Tight",sans-serif;cursor:pointer}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.tags span{background:var(--card);padding:11px 20px;border-radius:999px;font-size:14px}.tags span:first-child{background:var(--dark);color:#fff}
+.body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px}
+.left,.right{display:flex;flex-direction:column;gap:16px;min-width:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.c{background:var(--card);border-radius:28px;padding:20px 22px}
+.c.l{background:var(--lime);color:#15181a}.c.d{background:var(--dark);color:#fff}
+.top{display:flex;align-items:center;font-weight:500;font-size:15px;gap:10px}
+.ic{width:38px;height:38px;border-radius:12px;background:var(--bg);display:grid;place-items:center;font-size:16px}
+.l .ic{background:#fff}.d .ic{background:#2a2e30}
+.num{display:flex;align-items:flex-end;gap:10px;margin:18px 0;flex-wrap:wrap}
+.num b{font-size:54px;line-height:1;font-weight:500;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.num small{opacity:.55;font-size:13px;padding-bottom:7px}
+.pc{margin-left:auto;font-size:12px;font-weight:600;background:#fff;color:#15181a;border-radius:999px;padding:4px 10px}.d .pc{background:var(--lime)}
+.bars{display:flex;gap:5px}
+.bars i{flex:1;height:40px;border-radius:13px;background:var(--ink)}
+.l .bars i{background:#15181a}.d .bars i{background:var(--lime)}
+.bars i.o{background:transparent!important;border:1.5px dashed rgba(125,129,123,.6)}
+.panel{background:var(--panel);border-radius:28px;padding:20px 22px;min-width:0}
+.charts{display:grid;grid-template-columns:1.7fr 1fr;gap:16px}
+.ph{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ph h3{margin:0;font-size:22px;font-weight:500;letter-spacing:-.02em}
+.leg{display:flex;gap:14px;font-size:13px;color:var(--mute);flex-wrap:wrap}
+.leg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+svg{display:block;width:100%;height:auto;margin-top:8px}
+svg text{fill:var(--mute);font:11px "Inter Tight",sans-serif}
+.fc{background:var(--card);border-radius:28px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.fh{display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:17px}
+.fh span{background:var(--lime);color:#15181a;font-size:12px;font-weight:600;border-radius:999px;padding:4px 11px}
+.feed{max-height:520px;overflow:auto;display:flex;flex-direction:column;gap:8px}
+.a{display:flex;gap:11px;align-items:center;background:var(--bg);border-radius:18px;padding:11px 13px}
+.a .ic2{flex:none;width:32px;height:32px;border-radius:50%;background:var(--lime);color:#15181a;display:grid;place-items:center;font-weight:700;font-size:13px}
+.a.sh .ic2{background:var(--dark);color:var(--lime)}
+.a p{margin:0;font-weight:500;font-size:13.5px;line-height:1.25}
+.a small{display:block;color:var(--mute);font-size:11.5px;margin-top:2px}
+.exp{height:66px;border-radius:999px;background:var(--dark);color:#fff;font:500 17px "Inter Tight",sans-serif;display:flex;align-items:center;justify-content:space-between;padding:0 9px 0 26px;border:0;cursor:pointer}
+.exp i{width:48px;height:48px;border-radius:50%;background:var(--lime);color:#15181a;display:grid;place-items:center;font-style:normal;font-size:20px}
+.btn:hover,.exp:hover{opacity:.88}
+:focus-visible{outline:3px solid var(--ls);outline-offset:2px}
+@media(max-width:1000px){.body{grid-template-columns:1fr}}
+@media(max-width:760px){.shell{grid-template-columns:1fr;padding:10px}.side{display:none}.charts{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.num b{font-size:42px}}
+</style></head><body>
+<div class="shell">
+<nav class="side" aria-hidden="true"><b>✦</b><i class="on">▦</i><i>◔</i><i>⚠</i><i>⌁</i><span class="sp"></span><i>?</i></nav>
+<main>
+ <header>
+  <h1>Crosswalk <span class="chip">◉</span> Safety<br>and <span class="chip l">✦</span> Traffic Events</h1>
+  <div class="hr"><div class="pill"><span class="dot" id="dot"></span><span id="mode">Embedded data</span></div>
+   <button class="btn" id="load">+ Load events.json</button><input type="file" id="file" accept=".json,application/json" hidden></div>
+ </header>
+ <div class="tags" id="tags"></div>
+ <div class="body">
+  <div class="left">
+   <div class="cards" id="cards"></div>
+   <div class="charts">
+    <div class="panel"><div class="ph"><h3>Statistics</h3>
+     <div class="leg"><span><i style="background:var(--ink)"></i>People</span><span><i style="background:#9a9d98"></i>Bikes</span><span><i style="background:var(--ls)"></i>Cars</span><span><i style="background:var(--amber)"></i>Buses/trucks</span></div></div>
+     <svg id="line" viewBox="0 0 600 250" role="img" aria-label="Objects in view over time"></svg></div>
+    <div class="panel"><div class="ph"><h3>Vehicle share</h3></div><svg id="pie" viewBox="0 0 300 250" role="img" aria-label="Vehicle share"></svg></div>
+   </div>
+  </div>
+  <div class="right">
+   <div class="fc"><div class="fh">Crosswalk alerts <span id="cnt"></span></div><div class="feed" id="feed"></div></div>
+   <button class="exp" id="exp">Export summary <i>↗</i></button>
+  </div>
+ </div>
+</main>
+</div>
+<script>
+var JSON_PATH='out/events.json';
+function compute(data){
+var F=data.frames,G={person:'p',bicycle:'b',motorcycle:'b',car:'c',bus:'t',truck:'t'};
+var tr={},conc={p:0,b:0,c:0,t:0},sec={},sf={},cross=[],prev=0;
+var t0=F[0].pts_ns,t1=F[F.length-1].pts_ns;
+F.forEach(function(f){
+ var s=Math.floor((f.pts_ns-t0)/1e9),c={p:0,b:0,c:0,t:0};sec[s]=sec[s]||{p:0,b:0,c:0,t:0};sf[s]=(sf[s]||0)+1;
+ f.objects.forEach(function(o){var g=G[o.label];if(!g)return;c[g]++;(tr[o.label]=tr[o.label]||{})[o.id]=1});
+ for(var k in c){sec[s][k]+=c[k];if(c[k]>conc[k])conc[k]=c[k]}
+ var a=f.analytics&&f.analytics[0],cum=a?(a.line_crossing_cumulative.crosswalk_line||0):0;
+ if(cum>prev){var ppl=[],risk=false,cur=f.objects.filter(function(o){return o.label==='person'&&o.analytics&&o.analytics[0].line_crossing&&o.analytics[0].line_crossing.length}),
+  veh=f.objects.filter(function(o){return /car|truck|bus/.test(o.label)});
+  cur.forEach(function(p){ppl.push(p.id);var b=p.bbox,m=80;veh.forEach(function(v){var q=v.bbox;if(q.left<b.left+b.width+m&&q.left+q.width>b.left-m&&q.top<b.top+b.height+m&&q.top+q.height>b.top-m)risk=true})});
+  cross.push({frame:f.frame,t:(f.pts_ns-t0)/1e9,n:cum-prev,total:cum,ids:ppl,risk:risk});prev=cum}
+});
+var n=function(l){return Object.keys(tr[l]||{}).length},ser={p:[],b:[],c:[],t:[]},S=Object.keys(sec).map(Number).sort(function(a,b){return a-b});
+S.forEach(function(s){for(var k in ser)ser[k].push(+(sec[s][k]/sf[s]).toFixed(1))});
+var tot=S.map(function(s,i){return ser.p[i]+ser.b[i]+ser.c[i]+ser.t[i]}),pk=tot.indexOf(Math.max.apply(null,tot));
+return {frames:F.length,dur:(t1-t0)/1e9,fps:Math.round((F.length-1)/((t1-t0)/1e9)),w:F[0].width,h:F[0].height,
+ tracks:{person:n('person'),bike:n('bicycle')+n('motorcycle'),car:n('car'),bus:n('bus'),truck:n('truck')},
+ conc:conc,ser:ser,peak:S[pk],cross:cross,dets:F.reduce(function(a,f){return a+f.objects.length},0)}}
+
+var D={"frames":3039,"dur":60.76,"fps":50,"w":1920,"h":1080,"tracks":{"person":494,"bike":22,"car":182,"bus":15,"truck":47},"conc":{"p":52,"b":9,"c":40,"t":13},"ser":{"p":[18.5,22.7,27.1,34.3,44.1,46.7,43.5,42.3,40.3,43,43.9,41.2,39.7,40.6,42.5,36.5,36.9,38.2,34,35.8,26,28.9,24.1,26.9,27.6,31.3,37,40.5,40.1,37.2,31.7,23.4,19,19.2,21.3,22.3,24.3,22,29.1,31.8,28.2,28.3,24.9,29.2,32,37,36.5,38,30.9,29.1,29.5,29.2,29.6,24,30,31.9,27.7,26.4,25.8,27.9,33.1],"b":[0,0,0,0,0.3,3,1.8,0,0,0.1,0.1,0,0,0,0,0,0,0,0,0,1.4,3.4,4.5,5,5,5.8,6.9,6.9,7.3,7.4,5.7,1.8,3.5,6.3,0.5,0,0,0.2,0.2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"c":[8.6,10.2,14.1,15.3,15.7,12.7,11.8,13.1,17.1,14.9,12.6,11.8,12.5,12.8,13.9,12.8,15.4,16.7,16.5,17,19.8,23,25.6,26.4,27.2,25.1,19,19.9,23.4,28.7,31.2,30.4,29.7,32.1,29.9,27.3,28.8,30.9,27.4,21.9,24.3,24.1,24.4,28.7,26.5,25,26.8,28,28.2,30.5,32.1,32,31.3,31.6,33.2,37.9,35.6,35,35,36.2,34.5],"t":[2,1.7,1.5,1.7,2.3,3,3,3,3.2,3,3.9,3.4,4,3.1,3,3.3,3.1,4.1,5.3,6,6.4,4.8,3,3.1,3.3,3.7,4.3,4.6,3.2,3.6,1.3,2.6,3.2,2,5.9,10,7.3,5.9,1.5,1.5,1,1,0.9,1.2,0.4,1.3,2,1.7,2.7,5.2,3,3,3,3,3,3,3,3,3,3,3]},"peak":29,
+"cross":[{"frame":131,"t":2.62,"n":3,"total":3,"ids":[37,36,44],"risk":true},{"frame":332,"t":6.64,"n":3,"total":6,"ids":[93,92,100],"risk":false},{"frame":904,"t":18.08,"n":1,"total":7,"ids":[],"risk":false},{"frame":906,"t":18.12,"n":1,"total":8,"ids":[],"risk":false},{"frame":2546,"t":50.92,"n":1,"total":9,"ids":[636],"risk":true},{"frame":2574,"t":51.48,"n":1,"total":10,"ids":[639],"risk":true},{"frame":2692,"t":53.84,"n":1,"total":11,"ids":[661],"risk":true},{"frame":2728,"t":54.56,"n":1,"total":12,"ids":[670],"risk":true},{"frame":2731,"t":54.62,"n":1,"total":13,"ids":[664],"risk":true},{"frame":2749,"t":54.98,"n":1,"total":14,"ids":[662],"risk":true},{"frame":2754,"t":55.08,"n":1,"total":15,"ids":[672],"risk":true},{"frame":2756,"t":55.12,"n":1,"total":16,"ids":[668],"risk":true},{"frame":2912,"t":58.24,"n":1,"total":17,"ids":[724],"risk":true},{"frame":2918,"t":58.36,"n":1,"total":18,"ids":[726],"risk":true},{"frame":2986,"t":59.72,"n":1,"total":19,"ids":[738],"risk":false},{"frame":2987,"t":59.74,"n":1,"total":20,"ids":[737],"risk":false},{"frame":2991,"t":59.82,"n":1,"total":21,"ids":[739],"risk":false},{"frame":2993,"t":59.86,"n":1,"total":22,"ids":[742],"risk":false},{"frame":2996,"t":59.92,"n":1,"total":23,"ids":[744],"risk":false},{"frame":3007,"t":60.14,"n":1,"total":24,"ids":[714],"risk":false}],"dets":182292};
+
+var $=function(i){return document.getElementById(i)},p2=function(n){return String(n).padStart(2,'0')},mmss=function(s){return p2(Math.floor(s/60))+':'+p2(Math.floor(s%60))};
+function fmt(n){return n.toLocaleString()}
+function bars(pct){var f=pct>0?Math.max(1,Math.round(pct/10)):0,h='';for(var i=0;i<10;i++)h+='<i'+(i<f?'':' class="o"')+'></i>';return '<div class="bars">'+h+'</div>'}
+function cards(){var T=D.tracks,L=D.cross.length?D.cross[D.cross.length-1].total:0,R=D.cross.filter(function(x){return x.risk}).length,
+ tot=T.person+T.bike+T.car+T.bus+T.truck||1,sh=function(v){return Math.round(100*v/tot)};
+ var a=[['👤','People',T.person,'peak '+D.conc.p+' in view',sh(T.person),''],
+  ['🚗','Cars',T.car,'peak '+D.conc.c+' in view',sh(T.car),'l'],
+  ['🚲','Bikes',T.bike,'peak '+D.conc.b+' in view',sh(T.bike),''],
+  ['🚚','Buses & trucks',T.bus+T.truck,T.bus+' buses · '+T.truck+' trucks',sh(T.bus+T.truck),''],
+  ['⚠','Crossings',L,R+' risk alerts',L?Math.round(100*R/L):0,'d']];
+ $('cards').innerHTML=a.map(function(r){return '<div class="c '+r[5]+'"><div class="top"><span class="ic">'+r[0]+'</span>'+r[1]+'</div><div class="num"><b>'+fmt(r[2])+'</b><small>'+r[3]+'</small><span class="pc">'+r[4]+'%</span></div>'+bars(r[4])+'</div>'}).join('')}
+function line(){var W=530,H=180,X0=44,Y0=34,ks=['p','b','c','t'],co=['var(--ink)','#9a9d98','var(--ls)','var(--amber)'],n=D.ser.p.length,mx=1;
+ ks.forEach(function(k){D.ser[k].forEach(function(v){if(v>mx)mx=v})});mx=Math.ceil(mx/10)*10;var h='';
+ for(var i=0;i<=4;i++){var y=Y0+H*i/4;h+='<line x1="44" x2="574" y1="'+y+'" y2="'+y+'" style="stroke:var(--line)" stroke-dasharray="3 5"/><text x="36" y="'+(y+4)+'" text-anchor="end">'+Math.round(mx*(1-i/4))+'</text>'}
+ var xs=function(i){return X0+W*i/Math.max(1,n-1)},step=n>40?10:5;
+ for(var j=0;j<n;j+=step)h+='<text x="'+xs(j)+'" y="240" text-anchor="middle">'+mmss(j)+'</text>';
+ var px=xs(D.peak);h+='<rect x="'+(px-11)+'" y="'+(Y0-8)+'" width="22" height="'+(H+16)+'" rx="11" fill="none" style="stroke:var(--mute)" stroke-dasharray="4 4"/>';
+ ks.forEach(function(k,q){h+='<path fill="none" style="stroke:'+co[q]+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="'+D.ser[k].map(function(v,i){return(i?'L':'M')+xs(i).toFixed(1)+' '+(Y0+H*(1-v/mx)).toFixed(1)}).join('')+'"/>'});
+ var bx=Math.min(Math.max(px-38,44),498);h+='<rect x="'+bx+'" y="0" width="76" height="24" rx="12" style="fill:var(--dark)"/><text x="'+(bx+38)+'" y="16" text-anchor="middle" style="fill:#fff;font-weight:600">Peak '+mmss(D.peak)+'</text>';$('line').innerHTML=h}
+function pie(){var T=D.tracks,it=[['Cars',T.car,'var(--ls)'],['Trucks',T.truck,'var(--ink)'],['Buses',T.bus,'#9a9d98'],['Bikes',T.bike,'var(--amber)']],tot=it.reduce(function(a,b){return a+b[1]},0)||1,C=2*Math.PI*62,off=0,h='<g transform="translate(150 105) rotate(-90)" fill="none" stroke-width="24">';
+ it.forEach(function(r){var l=C*r[1]/tot;h+='<circle r="62" style="stroke:'+r[2]+'" stroke-dasharray="'+l.toFixed(1)+' '+C.toFixed(1)+'" stroke-dashoffset="-'+off.toFixed(1)+'"/>';off+=l});
+ h+='</g><text x="150" y="112" text-anchor="middle" style="font-size:28px;font-weight:500;fill:var(--ink)">'+fmt(tot)+'</text><text x="150" y="130" text-anchor="middle">tracked</text>';
+ it.forEach(function(r,i){h+='<circle cx="'+(i%2?162:30)+'" cy="'+(i<2?208:232)+'" r="5" style="fill:'+r[2]+'"/><text x="'+(i%2?174:42)+'" y="'+(i<2?212:236)+'">'+r[0]+' '+Math.round(100*r[1]/tot)+'%</text>'});$('pie').innerHTML=h}
+function feed(){var f=$('feed');f.innerHTML='';$('cnt').textContent=D.cross.length+' events';if(!D.cross.length){f.innerHTML='<p style="padding:10px;color:var(--mute)">No crosswalk events.</p>';return}
+ D.cross.slice().reverse().forEach(function(e){var d=document.createElement('div'),ids=e.ids.length?e.ids.map(function(i){return '#'+i}).join(', '):'';
+  d.className='a'+(e.risk?' sh':'');
+  d.innerHTML='<span class="ic2">'+(e.risk?'!':'i')+'</span><div><p>'+(e.risk?'Person on crosswalk, vehicle near':'Crosswalk line crossed')+(e.n>1?' ×'+e.n:'')+'</p><small>'+mmss(e.t)+' · frame '+e.frame+(ids?' · PED '+ids:'')+'</small></div>';
+  f.appendChild(d)})}
+function show(){$('tags').innerHTML=['Overview',mmss(D.dur)+' clip',fmt(D.frames)+' frames',D.fps+' fps',D.w+'×'+D.h,fmt(D.dets)+' detections'].map(function(t){return '<span>'+t+'</span>'}).join('');cards();line();pie();feed()}
+function loadData(j,label){D=compute(j);$('mode').textContent=label;$('dot').className='dot';show()}
+$('load').onclick=function(){$('file').click()};
+$('file').onchange=function(){var f=this.files[0];if(!f)return;$('mode').textContent='Reading…';var r=new FileReader();
+ r.onload=function(){try{loadData(JSON.parse(r.result),f.name)}catch(e){$('mode').textContent='Invalid file'}};r.readAsText(f)};
+$('exp').onclick=function(){var s={frames:D.frames,duration_s:D.dur,tracks:D.tracks,peak_concurrent:D.conc,crossings:D.cross},a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([JSON.stringify(s,null,2)],{type:'application/json'}));a.download='safecross-summary.json';a.click()};
+show();
+$('mode').textContent='Loading '+JSON_PATH+'…';
+fetch(JSON_PATH).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){loadData(j,JSON_PATH)})
+ .catch(function(){$('mode').textContent='Embedded data (could not read '+JSON_PATH+')';$('dot').className='dot warn'});
+</script></body></html>
