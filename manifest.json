@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "project_name": "Crosswalk Detection and Crossing Counts",
+  "project_id": "de56bef3-7209-45ad-95c6-1ae6189c0ea1",
+  "pipegen_version": "0.5.1",
+  "exported_at": "2026-10-15T16:15:37Z",
+  "origin": {
+    "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "trt": "10.3.0",
+    "arch": "x86_64",
+    "image": "craftifaidocker/deepstream:7.1-amd64-v3",
+    "gpu_slug": "nvidia-geforce-rtx-4050-laptop-gpu"
+  },
+  "models": [
+    {
+      "name": "yolo11s",
+      "onnx": "models/yolo11s.onnx",
+      "plan": "models/yolo11s.fp16.plan",
+      "precision": "fp16",
+      "workspace_mb": 1024,
+      "builder_optimization_level": 3,
+      "origin_builder_optimization_level": 0,
+      "onnx_sha256": "f8d06a921024c1a46091d48a59a8e377ba189f14250df167fe82f408ca37814b",
+      "plan_sha256": "441d0722a84af8fefd36a822e44cafc6b835d665191cf0c710d7481070332dd8",
+      "engine_bytes": 26363732,
+      "layer_count": 246
+    }
+  ],
+  "io": {
+    "default_input_kind": "file",
+    "default_input": "crosswalk.mp4",
+    "supported_inputs": [
+      "file",
+      "rtsp"
+    ],
+    "input_required": true,
+    "output_dir": "out",
+    "has_display_sink": true
+  },
+  "warnings": [
+    "the pipeline read crosswalk.mp4, which lives outside the project and cannot be shipped \u2014 the recipient must pass --input"
+  ]
+}
