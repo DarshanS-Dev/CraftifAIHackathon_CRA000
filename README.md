@@ -114,3 +114,10 @@ The dashboard reads `analytics[].line_crossing_cumulative` from each frame and e
 - **Line is fixed to this camera view.** Coordinates are in 1920x1080 space. A different clip needs `line-crossing-crosswalk_line` edited in `pipeline/configs/config_analytics.txt`.
 - **Suggestions are illustrative heuristics** on a short clip, not traffic engineering.
 - **Python stats/rules service (`/api/stats`) is not in this repo yet.** The PRD describes one; at present the dashboard computes its stats in the browser.
+
+---
+
+## Screen shots 
+
+![My Diagram](images/PipelineIR.jpeg)
+![My Diagram](images/Benchmark.jpeg)
